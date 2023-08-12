@@ -92,6 +92,11 @@ struct proc {
   int killed;                  // If non-zero, have been killed
   int xstate;                  // Exit status to be returned to parent's wait
   int pid;                     // Process ID
+  int interval;	       	       // Alarm interval (ticks)
+  uint64 handler;              // Pointer to handler
+  int ticks;		       // Number of ticks that have passed since the last call
+  struct trapframe *alarm_trapframe; // Backup the trapframe to restore the register at the time of the interrupt;
+  int enable_handler;          // Prevent re-entrant calls to the handler
 
   // wait_lock must be held when using this:
   struct proc *parent;         // Parent process
@@ -105,4 +110,38 @@ struct proc {
   struct file *ofile[NOFILE];  // Open files
   struct inode *cwd;           // Current directory
   char name[16];               // Process name (debugging)
+
+   // 需要保存的历史寄存器用
+  uint64 his_epc;           
+  uint64 his_ra;
+  uint64 his_sp;
+  uint64 his_gp;
+  uint64 his_tp;
+  uint64 his_t0;
+  uint64 his_t1;
+  uint64 his_t2;
+  uint64 his_t3;
+  uint64 his_t4;
+  uint64 his_t5;
+  uint64 his_t6;
+  uint64 his_a0;
+  uint64 his_a1;
+  uint64 his_a2;
+  uint64 his_a3;
+  uint64 his_a4;
+  uint64 his_a5;
+  uint64 his_a6;
+  uint64 his_a7;
+  uint64 his_s0;
+  uint64 his_s1;
+  uint64 his_s2;
+  uint64 his_s3;
+  uint64 his_s4;
+  uint64 his_s5;
+  uint64 his_s6;
+  uint64 his_s7;
+  uint64 his_s8;
+  uint64 his_s9;
+  uint64 his_s10;
+  uint64 his_s11;
 };
